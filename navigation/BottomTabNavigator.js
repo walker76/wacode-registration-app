@@ -3,7 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import JobMapScreeen from '../screens/JobMapScreen';
+import MapScreeen from '../screens/MapScreen';
+import FindOrders from '../screens/FindOrders';
+import MyOrders from '../screens/MyOrders';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -17,26 +19,26 @@ export default function BottomTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-        name="Find Orders"
-        component={LinksScreen}
+        name="FindOrders"
+        component={FindOrders}
         options={{
-          title: 'Resources',
+          title: 'Find Orders',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
       <BottomTab.Screen
-        name="My Orders"
-        component={LinksScreen}
+        name="MyOrders"
+        component={MyOrders}
         options={{
-          title: 'Resources',
+          title: 'My Orders',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
       <BottomTab.Screen
         name="Map"
-        component={JobMapScreeen}
+        component={MapScreeen}
         options={{
-          title: 'Resources',
+          title: 'Map',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
