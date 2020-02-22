@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Tile } from 'react-native-elements';
+import axios from 'axios';
 
 class OrderInfoPage extends React.Component {
 
@@ -16,28 +17,15 @@ class OrderInfoPage extends React.Component {
 
   constructor(props){
     super(props);
-    const {state} = props.navigation;
-
+    console.log(props);
     this.state = {
-      id: state.params.id,
+      id: this.props.route.params.id,
       job: [],
     }
   }
 
   componentDidMount(){
-
-    AsyncStorage.getItem('@Store:id')
-    .then(res => {
-      if(res === undefined || res === null){
-        this.props.navigation.navigate('Login');
-      }
-    })
-    .catch(err => {
-      console.error(err);
-    });
-
-    console.log(this.state.id);
-    fetch('https://wacode-2020.herokuapp.com/orders/findById/' + this.state.id)
+    fetch('https://wacode-2020.herokuapp.com/orders/findByOrderId/' + this.state.id)
     .then(response => {
       return response.json();
     }).then(responseJSON => {
@@ -49,31 +37,28 @@ class OrderInfoPage extends React.Component {
   }
 
     onPress = () => {
+      const updateRequest = {
+        id: this.state.id,
+        status: "ACCEPTED",
+        workerId: 131849,
+      }
 
-      AsyncStorage.getItem('@Store:id')
-      .then(res => {
-
-        updateRequest = {
-          id: this.state.id,
-          status: "ACCEPTED",
-          workerId: email,
+      axios.put('https://wacode-2020.herokuapp.com/orders/updateOrderStatus/', updateRequest)
+      .then(response => {
+        console.log(response.data);
+        if(response.data !== undefined && response.data !== null){
+          console.log('setting state');
+          this.setState({
+            orders: response.data,
+          });
         }
-  
-        fetch('https://wacode-2020.herokuapp.com/orders/findById/updateOrderStatus/', {
-          method: 'PUT',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updateRequest),
-        });
-
+      })
+      .then(() => {
+        this.props.navigation.navigate('Root');
       })
       .catch(err => {
         console.error(err);
       });
-
-      this.props.navigation.navigate('FindOrders');
   }
 
   render() {
@@ -95,11 +80,10 @@ class OrderInfoPage extends React.Component {
     return (
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff' }}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Tile imageSrc={require('../assets/images/help.jpeg')}/>
           <View style={styles.container}>
-            <Text style={styles.textInput}>Job Title: {this.state.job.title}{"\n"}</Text>
-            <Text style={styles.textInput}>Job Description: {this.state.job.description}{"\n"}</Text>
-            <Text style={styles.textInput}>Job Type: {this.state.job.type}{"\n"}</Text>
+            <Text style={styles.textInput}>Order Customer: {this.state.job.title}{"\n"}</Text>
+            <Text style={styles.textInput}>Order Address: {this.state.job.description}{"\n"}</Text>
+            <Text style={styles.textInput}>Order Type: {this.state.job.status}{"\n"}</Text>
           </View>
           <TouchableOpacity style={styles.buttonContainer}
             onPress={this.onPress}>

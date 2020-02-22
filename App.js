@@ -11,6 +11,7 @@ import useLinking from './navigation/useLinking';
 
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
+import OrderInfoPage from './screens/OrderInfoPage';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ export default function App(props) {
             <Stack.Screen name="Login" component={Login}  />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Root" component={BottomTabNavigator} />
+            <Stack.Screen name="OrderDetails" component={OrderInfoPage} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -74,6 +74,7 @@ class FindOrders extends React.Component {
                 <ListItem
                   key={i}
                   title={item.title}
+                  subtitle={item.description}
                   rightIcon = {<Icon name={'chevron-right'} type={'font-awesome'} size={25}/>}
                   height= {60}
                   onPress={() => {
@@ -91,8 +92,7 @@ class FindOrders extends React.Component {
   }
 
   _handleClick(_id) {
-    const { navigate } = this.props.navigation;
-    navigate('OrderDetails',{ id: _id });
+    this.props.navigation.navigate('OrderDetails',{ id: _id });
   }
 }
 

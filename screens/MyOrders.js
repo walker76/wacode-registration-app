@@ -24,21 +24,15 @@ class MyOrders extends React.Component {
 
   componentDidMount(){
 
-    AsyncStorage.getItem('@Store:id')
-    .then(res => {
-      if(res === undefined || res === null){
-        this.props.navigation.navigate('Login');
+    axios.get('https://wacode-2020.herokuapp.com/orders/findByWorkerId/131849')
+    .then(response => {
+      console.log(response.data);
+      if(response.data !== undefined && response.data !== null){
+        console.log('setting state');
+        this.setState({
+          data: response.data,
+        });
       }
-      axios.get('https://wacode-2020.herokuapp.com/orders/findByWorkerId/' + res)
-      .then(response => {
-        console.log(response.data);
-        if(response.data !== undefined && response.data !== null){
-          console.log('setting state');
-          this.setState({
-            data: response.data,
-          });
-        }
-      });
     })
     .catch(err => {
       console.error(err);
@@ -70,12 +64,9 @@ class MyOrders extends React.Component {
                 <ListItem
                   key={i}
                   title={item.title}
-                  rightIcon = {<Icon name={'chevron-right'} type={'font-awesome'} size={25}/>}
+                  subtitle={item.description}
                   height= {60}
-                  onPress={() => {
-                      this._handleClick(item.id)
-                    }
-                  }
+                  onPress={() => null}
                   keyExtractor={item => item.id}
                 />
               ))
@@ -84,11 +75,6 @@ class MyOrders extends React.Component {
         </ScrollView>
       </View>
     );
-  }
-
-  _handleClick(_id) {
-    const { navigate } = this.props.navigation;
-    navigate('OrderDetails',{ id: _id });
   }
 }
 
