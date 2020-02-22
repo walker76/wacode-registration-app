@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import * as firebase from 'firebase';
+//import * as firebase from 'firebase';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -20,8 +20,8 @@ export default class SettingsScreen extends React.Component {
   }
 
   _logout(){
-      firebase.auth().signOut()
-      .then(() => this.props.navigation.navigate('Loading'))
+      // firebase.auth().signOut()
+      // .then(() => this.props.navigation.navigate('Loading'))
   }
 
   render() {

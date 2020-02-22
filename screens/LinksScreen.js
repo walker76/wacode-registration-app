@@ -1,93 +1,110 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { ListItem, Icon } from 'react-native-elements'
+import * as React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import {AsyncStorage} from 'react-native';
 
 export default class LinksScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Find Jobs',
-  };
 
-  constructor(props){
-    super(props);
-    this._handleClick = this._handleClick.bind(this);
+  componentWillMount(){
+    AsyncStorage.getItem('@Store:id')
+    .then(res => {
+      if(res === undefined || res === null){
+        this.props.navigation.navigate('Login');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
-  render() {
+  logout(){
+    AsyncStorage.removeItem('@Store:id')
+    .then(res => {
+      this.props.navigation.navigate('Login');
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
 
-    const list = [
-      {
-        title: 'Food',
-        icon: 'cutlery'
-      },
-      {
-        title: 'Handyman',
-        icon: 'wrench'
-      },
-      {
-        title: 'Company',
-        icon: 'heart'
-      },
-      {
-        title: 'Driver',
-        icon: 'car'
-      },
-      {
-        title: 'Professional',
-        icon: 'black-tie'
-      },
-      {
-        title: 'Recreation',
-        icon: 'bicycle'
-      },
-      {
-        title: 'Misc',
-        icon: 'circle'
-      },
-    ]
-
+  render(){
     return (
-      <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        {/* <ExpoLinksView /> */}
-        <View style={styles.container}>
-         {
-            list.map((item, i) => (
-              <ListItem
-                key={item.title}
-                title={item.title}
-                titleContainerStyle={styles.titleContainerStyle}
-                leftIcon = {<Icon name={item.icon} type={'font-awesome'} size={25}/>}
-                rightIcon = {<Icon name={'chevron-right'} type={'font-awesome'} size={25}/>}
-                height= {60}
-                onPress={() => {
-                    this._handleClick(item.title)
-                  }
-                }
-                keyExtractor={item => item.title}
-              />
-            ))
-          }
-        </View>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <OptionButton
+          icon="md-school"
+          label="Read the Expo documentation"
+          onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
+        />
+
+        <OptionButton
+          icon="md-compass"
+          label="Read the React Navigation documentation"
+          onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
+        />
+
+        <OptionButton
+          icon="ios-chatboxes"
+          label="Ask a question on the forums"
+          onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
+          isLastOption
+        />
+
+        <OptionButton
+          icon="ios-chatboxes"
+          label="Ask a question on the forums"
+          onPress={() => {
+            this.logout();
+          }}
+          isLastOption
+        />
 
       </ScrollView>
     );
   }
+}
 
-  _handleClick(_name) {
-    const { navigate } = this.props.navigation;
-    navigate('JobInfo',{ name: _name });
-  }
-  
+function OptionButton({ icon, label, onPress, isLastOption }) {
+  return (
+    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={styles.optionIconContainer}>
+          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
+        </View>
+        <View style={styles.optionTextContainer}>
+          <Text style={styles.optionText}>{label}</Text>
+        </View>
+      </View>
+    </RectButton>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    fontSize: 70,
+    backgroundColor: '#fafafa',
   },
-  titleContainerStyle: {
-    fontSize: 70,
+  contentContainer: {
+    paddingTop: 15,
+  },
+  optionIconContainer: {
+    marginRight: 12,
+  },
+  option: {
+    backgroundColor: '#fdfdfd',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 0,
+    borderColor: '#ededed',
+  },
+  lastOption: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  optionText: {
+    fontSize: 15,
+    alignSelf: 'flex-start',
+    marginTop: 1,
   },
 });

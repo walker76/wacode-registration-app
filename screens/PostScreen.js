@@ -9,40 +9,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import * as firebase from 'firebase';
 import {Permissions, Location} from 'expo';
 
-
-const JobTypes = [
-  {
-      label: 'Food',
-      value: 'FOOD',
-  },
-  {
-      label: 'Handy Man',
-      value: 'HANDYMAN',
-  },
-  {
-      label: 'Company',
-      value: 'COMPANY',
-  },
-  {
-    label: 'Driver',
-    value: 'DRIVER',
-},
-{
-  label: 'Professional',
-  value: 'PROFESSIONAL',
-},
-{
-  label: 'Recreation',
-  value: 'RECREATION',
-  color: 'purple',
-},
-{
-  label: 'Miscellaneous',
-  value: 'MISC',
-},
-
-];
-
   
 export default class PostScreen extends React.Component {
   static navigationOptions = {
@@ -51,7 +17,7 @@ export default class PostScreen extends React.Component {
 
   constructor(props){
     super(props);
-    let email = firebase.auth().currentUser.email;
+    let email = 'email'; //firebase.auth().currentUser.email;
 
     this._getLocationAsync();
 

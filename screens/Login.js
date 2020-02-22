@@ -1,21 +1,77 @@
 // Login.js
 import React from 'react';
 import { KeyboardAvoidingView, Image, StyleSheet, Text, TextInput, View, Button } from 'react-native';
-import * as firebase from 'firebase';
+import axios from 'axios';
+import {AsyncStorage} from 'react-native';
 
 export default class Login extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
+  constructor(props){
+    super(props);
+    console.log('login');
+    this.state = { 
+      email: '', 
+      password: '', 
+      errorMessage: null,
+      authenticated: false 
+    };
+  }
+
+  componentWillMount(){
+    AsyncStorage.getItem('@Store:id')
+    .then(res => {
+      console.log(res);
+      if(res !== undefined && res !== null){
+        this.props.navigation.navigate('Root');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
 
   handleLogin = () => {
-    const { email, password } = this.state
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Main'))
-      .catch(error => this.setState({ errorMessage: error.message }))
+
+    console.log(this.state);
+
+    const authRecord = {
+      email: this.state.email,
+      password: this.state.password
+    }
+
+    axios.put('https://wacode-2020.herokuapp.com/auth/login', authRecord)
+      .then(response => {
+        console.log(response.data);
+        if(response.data !== undefined){
+          console.log('response', response.data);
+          this.setState({
+            authenticated: true,
+          }, () => {
+            AsyncStorage.setItem('@Store:id', response.data.id)
+            .catch(err => {
+              console.error(err);
+            });
+          })
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          email: this.state.email, 
+          password: this.state.password, 
+          errorMessage: 'not found',
+          authenticated: false,
+        });
+      });
   }
 
   render() {
+    if(this.state.authenticated){
+      this.props.navigation.navigate('Root');
+    }
+
+    let email = this.state.email !== undefined ? this.state.email : '';
+    let password = this.state.password !== undefined ? this.state.password : '';
+
     return (
       <KeyboardAvoidingView
       style={styles.container}
@@ -35,7 +91,7 @@ export default class Login extends React.Component {
           autoCapitalize="none"
           placeholder= "Email"
           onChangeText={email => this.setState({ email })}
-          value={this.state.email}
+          value={email}
         />
         <TextInput
           secureTextEntry
@@ -43,7 +99,7 @@ export default class Login extends React.Component {
           autoCapitalize="none"
           placeholder="Password"
           onChangeText={password => this.setState({ password })}
-          value={this.state.password}
+          value={password}
         />
         <Text></Text>
         <Button title="Login" onPress={this.handleLogin} />

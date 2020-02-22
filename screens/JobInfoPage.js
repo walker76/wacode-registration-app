@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Tile } from 'react-native-elements';
-import * as firebase from 'firebase';
-
 
 class JobInfoPage extends React.Component {
 
@@ -41,7 +39,7 @@ class JobInfoPage extends React.Component {
 
     onPress = () => {
 
-      let email = firebase.auth().currentUser.email;
+      let email = 'email'; //firebase.auth().currentUser.email;
 
       JobUpdateRequest = {
         id: this.state.id,
