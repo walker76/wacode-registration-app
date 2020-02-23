@@ -23,7 +23,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={FindOrders}
         options={{
           title: 'Find Orders',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-search" />,
         }}
       />
       <BottomTab.Screen
@@ -39,7 +39,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={MapScreeen}
         options={{
           title: 'Map',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-globe" />,
         }}
       />
     </BottomTab.Navigator>
