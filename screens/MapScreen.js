@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button } from 'react-native';
 import MapView from 'react-native-web-maps';
+import GallerySwiper from 'react-native-gallery-swiper';
 
 export default class MapScreen extends React.Component {
   
@@ -36,46 +37,13 @@ export default class MapScreen extends React.Component {
 
   render() {
     return (
-      <MapView
-        style={styles.map}
-        region={{
-          latitude: 31.5497,
-          longitude: -97.1143,
-          latitudeDelta: 0.03,
-          longitudeDelta: 0.03,
-        }}
-      >
-        <MapView.Marker
-          coordinate={{
-            latitude: 31.5467,
-            longitude: -97.1043
-          }}
-          title={"Sample Mission #1"}
-          description={"Sample Description"}
-          pinColor='green'
-        >
-        </MapView.Marker>
-        <MapView.Marker
-          coordinate={{
-            latitude: 31.5487,
-            longitude: -97.1143
-          }}
-          title={"Sample Mission #2"}
-          description={"Sample Description"}
-          pinColor='yellow'
-        >
-        </MapView.Marker>
-        <MapView.Marker
-          coordinate={{
-            latitude: 31.5507,
-            longitude: -97.1243
-          }}
-          title={"Sample Mission #3"}
-          description={"Sample Description"}
-          pinColor='red'
-        >
-        </MapView.Marker>
-      </MapView>
+          <GallerySwiper
+              images={[
+                { source: require("../assets/images/FullSizeRender.jpeg"),
+                  width: 828,
+                  height: 1450 },
+              ]}
+          />
     );
   }
 }
