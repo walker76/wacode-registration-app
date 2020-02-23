@@ -16,6 +16,12 @@ export default function BottomTabNavigator({ navigation, route }) {
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
+  let refresh = false;
+  if(route.params !== undefined && route.params.refresh !== undefined){
+    refresh = route.params.refresh;
+  }
+
+  console.log("navigator", route);
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen

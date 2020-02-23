@@ -54,7 +54,7 @@ class OrderInfoPage extends React.Component {
         }
       })
       .then(() => {
-        this.props.navigation.navigate('Root');
+        this.props.navigation.navigate('Root', {refresh: true});
       })
       .catch(err => {
         console.error(err);
